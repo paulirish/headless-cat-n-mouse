@@ -1,4 +1,3 @@
-
 module.exports = async function(page) {
   // Pass the User-Agent Test.
   const userAgent =

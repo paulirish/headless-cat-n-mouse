@@ -1,4 +1,4 @@
-module.exports = function() {
+module.exports = async function() {
   let isHeadless = false;
 
   function confirmDetection(msg) {
@@ -18,12 +18,10 @@ module.exports = function() {
     confirmDetection('Chrome headless detected via window.chrome');
   }
 
-  (async () => {
-    const permissionStatus = await navigator.permissions.query({name: 'notifications'});
-    if (Notification.permission === 'denied' && permissionStatus.state === 'prompt') {
-      confirmDetection('Chrome headless detected via permissions API');
-    }
-  })();
+  const permissionStatus = await navigator.permissions.query({name: 'notifications'});
+  if (Notification.permission === 'denied' && permissionStatus.state === 'prompt') {
+    confirmDetection('Chrome headless detected via permissions API');
+  }
 
   if (navigator.plugins.length === 0) {
     confirmDetection('Chrome headless potentially detected via navigator.plugins');
@@ -32,4 +30,6 @@ module.exports = function() {
   if (navigator.languages === '') {
     confirmDetection('Chrome headless detected via navigator.languages');
   }
+
+  console.log(isHeadless ? 'Detection *succeeded*' : 'Detection *failed*');
 };

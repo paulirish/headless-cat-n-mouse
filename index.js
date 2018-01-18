@@ -24,9 +24,6 @@ const detectHeadless = require('./detect-headless');
 
   await page.evaluate(detectHeadless);
 
-  // Save a screenshot of the results.
-  await page.screenshot({path: 'headless-test-result.png'});
-
   // Clean up.
   await browser.close();
 })();
