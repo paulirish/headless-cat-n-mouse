@@ -31,8 +31,15 @@ module.exports = async function(page) {
       parameters.name === 'notifications'
         ? Promise.resolve({state: Notification.permission})
         : originalQuery(parameters);
-    window.navigator.permissions.__proto__.query.toString = _ =>
-      'function query() { [native code] }';
+    window.navigator.permissions.__proto__.query.toString = new Proxy(originalQuery.toString, {
+      get() {
+        return originalQuery.toString.bind(originalQuery.toString);
+      },
+      
+      apply() {
+        return 'function query() { [native code] }';
+      }
+    })
   });
 
   // Pass the Plugins Length Test.
