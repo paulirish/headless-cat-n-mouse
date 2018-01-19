@@ -6,8 +6,11 @@
   "dependencies": {
     "puppeteer": "^1.0.0"
   },
+  "bin": {
+    "headless-cat-n-mouse": "bin.js"
+  },
   "private": true,
   "scripts": {
-    "start": "node ."
+    "start": "node bin.js"
   }
 }
