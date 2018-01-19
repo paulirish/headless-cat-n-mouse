@@ -1,15 +1,15 @@
 // We'll use Puppeteer is our browser automation framework.
 const puppeteer = require('puppeteer');
 
-const avoidDetection = require('./avoid-detection');
+const applyEvasions = require('./apply-evasions');
 const detectHeadless = require('./detect-headless');
 
-async function run({applyEvasions = true, suppressLogs = false}) {
+async function run({includeEvasions = true, suppressLogs = false}) {
   const browser = await puppeteer.launch({args: ['--no-sandbox']});
   const page = await browser.newPage();
   let wasDetected = null;
 
-  if (applyEvasions) await avoidDetection(page);
+  if (includeEvasions) await applyEvasions(page);
 
   page.on('console', msg => {
     if (msg.type() === 'debug') {
@@ -29,12 +29,12 @@ async function run({applyEvasions = true, suppressLogs = false}) {
 
 // FIXME: confirm every individual detect works
 async function testDetects() {
-  const wasHeadlessDetected = await run({applyEvasions: false, suppressLogs: true});
+  const wasHeadlessDetected = await run({includeEvasions: false, suppressLogs: true});
   console.assert(wasHeadlessDetected === true, 'Detections failed');
 }
 
 async function testEvasions() {
-  const wasHeadlessDetected = await run({applyEvasions: true});
+  const wasHeadlessDetected = await run({includeEvasions: true});
   console.assert(wasHeadlessDetected === false, 'Evasions failed');
 
   console.log(
