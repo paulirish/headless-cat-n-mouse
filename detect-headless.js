@@ -1,3 +1,6 @@
+// initial detects from @antoinevastel
+//   http://antoinevastel.github.io/bot%20detection/2018/01/17/detect-chrome-headless-v2.html
+
 module.exports = async function() {
   const results = {};
 
@@ -11,11 +14,11 @@ module.exports = async function() {
     return /HeadlessChrome/.test(window.navigator.userAgent);
   });
 
-  await test('navigator.webdriver', _ => {
+  await test('navigator.webdriver present', _ => {
     return navigator.webdriver;
   });
 
-  await test('window.chrome', _ => {
+  await test('window.chrome missing', _ => {
     return /Chrome/.test(window.navigator.userAgent) && !window.chrome;
   });
 
@@ -25,15 +28,16 @@ module.exports = async function() {
   });
 
   await test('permissions API overriden', _ => {
-    if (navigator.permissions.query.toString() !== 'function query() { [native code] }') return true;
-    if (window.navigator.permissions.hasOwnProperty('query')) return true;
+    const permissions = window.navigator.permissions;
+    if (permissions.query.toString() !== 'function query() { [native code] }') return true;
+    if (permissions.hasOwnProperty('query')) return true;
   });
 
-  await test('navigator.plugins', _ => {
+  await test('navigator.plugins empty', _ => {
     return navigator.plugins.length === 0;
   });
 
-  await test('navigator.languages', _ => {
+  await test('navigator.languages blank', _ => {
     return navigator.languages === '';
   });
 

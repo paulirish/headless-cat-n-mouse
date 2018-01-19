@@ -1,3 +1,7 @@
+// initial evasions from @sangaline
+//   https://intoli.com/blog/not-possible-to-block-chrome-headless/
+//   https://intoli.com/blog/not-possible-to-block-chrome-headless/test-headless-final.js
+
 module.exports = async function(page) {
   // Pass the User-Agent Test.
   const userAgent =
