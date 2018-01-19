@@ -6,7 +6,8 @@ Let's host this [fight](https://news.ycombinator.com/item?id=16179602) within a 
 
 **Current status:**
 ```txt
-detection evaders are winning
+Headless detection *failed*.
+😎  Evaders are winning!
 ```
 
 ---------------
