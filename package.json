@@ -9,7 +9,6 @@
   "bin": {
     "headless-cat-n-mouse": "bin.js"
   },
-  "private": true,
   "scripts": {
     "start": "node bin.js"
   }
