@@ -31,5 +31,9 @@ module.exports = async function() {
     confirmDetection('Chrome headless detected via navigator.languages');
   }
 
+  if (window.navigator.permissions.query.toString() !== 'function query() { [native code] }') {
+      confirmDetection('Chrome headless detected via permissions API overriden');
+  }
+
   console.debug(isHeadless);
 };
