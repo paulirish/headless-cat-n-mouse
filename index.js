@@ -17,7 +17,7 @@ async function run({includeEvasions = true, suppressLogs = false}) {
       if (!suppressLogs) console.log('Page console: ', msg.text());
     }
   });
-  await page.goto('http://example.com');
+  await page.goto('about:blank');
 
   await page.evaluate(detectHeadless);
   console.assert(wasDetected !== null);
