@@ -27,11 +27,12 @@ module.exports = async function(page) {
   // Pass the Permissions Test.
   await page.evaluateOnNewDocument(() => {
     const originalQuery = window.navigator.permissions.query;
-    window.navigator.permissions.query = parameters =>
+    window.navigator.permissions.__proto__.query = parameters =>
       parameters.name === 'notifications'
         ? Promise.resolve({state: Notification.permission})
         : originalQuery(parameters);
-    window.navigator.permissions.query.toString = _ => 'function query() { [native code] }';
+    window.navigator.permissions.__proto__.query.toString = _ =>
+      'function query() { [native code] }';
   });
 
   // Pass the Plugins Length Test.
