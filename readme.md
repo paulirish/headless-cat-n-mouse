@@ -5,7 +5,7 @@
 
 Let's host this [fight](https://news.ycombinator.com/item?id=16179602) within a single repo.
 
-**Current status:** `detection evaders are winning`.
+**Current status:** `detectors are winning`.
 
 ### To run:
 ```sh
