@@ -31,5 +31,5 @@ module.exports = async function() {
     confirmDetection('Chrome headless detected via navigator.languages');
   }
 
-  console.log(isHeadless ? 'Detection *succeeded*' : 'Detection *failed*');
+  console.debug(isHeadless);
 };
