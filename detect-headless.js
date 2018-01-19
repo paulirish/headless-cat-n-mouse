@@ -30,6 +30,7 @@ module.exports = async function() {
   await test('permissions API overriden', _ => {
     const permissions = window.navigator.permissions;
     if (permissions.query.toString() !== 'function query() { [native code] }') return true;
+    if (permissions.query.toString.toString() !== 'function toString() { [native code] }') return true;
     if (permissions.hasOwnProperty('query')) return true;
   });
 
