@@ -6,24 +6,20 @@ const detectHeadless = require('./detect-headless');
 async function run({includeEvasions = true, suppressLogs = false}) {
   const browser = await puppeteer.launch({args: ['--no-sandbox']});
   const page = await browser.newPage();
-  let wasDetected = null;
+  page.on('console', msg => {
+    if (!suppressLogs) console.log('Page console: ', msg.text());
+  });
 
   if (includeEvasions) await applyEvasions(page);
 
-  page.on('console', msg => {
-    if (msg.type() === 'debug') {
-      wasDetected = msg.text() === 'true';
-    } else {
-      if (!suppressLogs) console.log('Page console: ', msg.text());
-    }
-  });
   await page.goto('about:blank');
 
-  await page.evaluate(detectHeadless);
-  console.assert(wasDetected !== null);
+  const detectionResults = await page.evaluate(detectHeadless);
+
+  console.assert(Object.keys(detectionResults).length, 'No detection results returned.');
 
   await browser.close();
-  return wasDetected;
+  return detectionResults;
 }
 
 module.exports = run;
