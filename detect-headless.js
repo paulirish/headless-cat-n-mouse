@@ -18,6 +18,9 @@ module.exports = async function() {
     confirmDetection('Chrome headless detected via window.chrome');
   }
 
+  if (navigator.permissions.query.toString() !== 'function query() { [native code] }') {
+    confirmDetection('Chrome headless detected via permissions API override');
+  }
   const permissionStatus = await navigator.permissions.query({name: 'notifications'});
   if (Notification.permission === 'denied' && permissionStatus.state === 'prompt') {
     confirmDetection('Chrome headless detected via permissions API');
