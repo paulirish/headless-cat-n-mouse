@@ -31,6 +31,11 @@ module.exports = async function() {
     const permissions = window.navigator.permissions;
     if (permissions.query.toString() !== 'function query() { [native code] }') return true;
     if (permissions.query.toString.toString() !== 'function toString() { [native code] }') return true;
+    if (
+      permissions.query.toString.hasOwnProperty('[[Handler]]') &&
+      permissions.query.toString.hasOwnProperty('[[Target]]') &&
+      permissions.query.toString.hasOwnProperty('[[IsRevoked]]')
+    ) return true;
     if (permissions.hasOwnProperty('query')) return true;
   });
 
