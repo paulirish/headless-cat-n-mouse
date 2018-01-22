@@ -31,15 +31,27 @@ module.exports = async function(page) {
       parameters.name === 'notifications'
         ? Promise.resolve({state: Notification.permission})
         : originalQuery(parameters);
-    window.navigator.permissions.__proto__.query.toString = new Proxy(originalQuery.toString, {
-      get() {
-        return originalQuery.toString.bind(originalQuery.toString);
-      },
-      
-      apply() {
-        return 'function query() { [native code] }';
+
+      // Inspired by: https://github.com/ikarienator/phantomjs_hide_and_seek/blob/master/5.spoofFunctionBind.js
+      const oldCall = Function.prototype.call;
+      function call() {
+          return oldCall.apply(this, arguments);
       }
-    })
+      Function.prototype.call = call;
+
+      const nativeToStringFunctionString = Error.toString().replace(/Error/g, "toString");
+      const oldToString = Function.prototype.toString;
+
+      function functionToString() {
+        if (this === window.navigator.permissions.query) {
+          return "function query() { [native code] }";
+        }
+        if (this === functionToString) {
+          return nativeToStringFunctionString;
+        }
+        return oldCall.call(oldToString, this);
+      }
+      Function.prototype.toString = functionToString;
   });
 
   // Pass the Plugins Length Test.
