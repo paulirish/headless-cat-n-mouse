@@ -1,3 +1,7 @@
+// initial evasions from @sangaline
+//   https://intoli.com/blog/not-possible-to-block-chrome-headless/
+//   https://intoli.com/blog/not-possible-to-block-chrome-headless/test-headless-final.js
+
 module.exports = async function(page) {
   // Pass the User-Agent Test.
   const userAgent =
@@ -23,10 +27,19 @@ module.exports = async function(page) {
   // Pass the Permissions Test.
   await page.evaluateOnNewDocument(() => {
     const originalQuery = window.navigator.permissions.query;
-    return (window.navigator.permissions.query = parameters =>
+    window.navigator.permissions.__proto__.query = parameters =>
       parameters.name === 'notifications'
         ? Promise.resolve({state: Notification.permission})
-        : originalQuery(parameters));
+        : originalQuery(parameters);
+    window.navigator.permissions.__proto__.query.toString = new Proxy(originalQuery.toString, {
+      get() {
+        return originalQuery.toString.bind(originalQuery.toString);
+      },
+      
+      apply() {
+        return 'function query() { [native code] }';
+      }
+    })
   });
 
   // Pass the Plugins Length Test.

@@ -1,39 +1,46 @@
+// initial detects from @antoinevastel
+//   http://antoinevastel.github.io/bot%20detection/2018/01/17/detect-chrome-headless-v2.html
+
 module.exports = async function() {
-  let isHeadless = false;
+  const results = {};
 
-  function confirmDetection(msg) {
-    console.log(msg);
-    isHeadless = true;
+  async function test(name, fn) {
+    const detectionPassed = await fn();
+    if (detectionPassed) console.log(`Chrome headless detected via ${name}`);
+    results[name] = detectionPassed;
   }
 
-  if (/HeadlessChrome/.test(window.navigator.userAgent)) {
-    confirmDetection('Chrome headless detected via userAgent');
-  }
+  await test('userAgent', _ => {
+    return /HeadlessChrome/.test(window.navigator.userAgent);
+  });
 
-  if (navigator.webdriver) {
-    confirmDetection('Chrome headless detected via navigator.webdriver');
-  }
+  await test('navigator.webdriver present', _ => {
+    return navigator.webdriver;
+  });
 
-  if (/Chrome/.test(window.navigator.userAgent) && !window.chrome) {
-    confirmDetection('Chrome headless detected via window.chrome');
-  }
+  await test('window.chrome missing', _ => {
+    return /Chrome/.test(window.navigator.userAgent) && !window.chrome;
+  });
 
-  const permissionStatus = await navigator.permissions.query({name: 'notifications'});
-  if (Notification.permission === 'denied' && permissionStatus.state === 'prompt') {
-    confirmDetection('Chrome headless detected via permissions API');
-  }
+  await test('permissions API', async _ => {
+    const permissionStatus = await navigator.permissions.query({name: 'notifications'});
+    return Notification.permission === 'denied' && permissionStatus.state === 'prompt';
+  });
 
-  if (navigator.plugins.length === 0) {
-    confirmDetection('Chrome headless potentially detected via navigator.plugins');
-  }
+  await test('permissions API overriden', _ => {
+    const permissions = window.navigator.permissions;
+    if (permissions.query.toString() !== 'function query() { [native code] }') return true;
+    if (permissions.query.toString.toString() !== 'function toString() { [native code] }') return true;
+    if (permissions.hasOwnProperty('query')) return true;
+  });
 
-  if (navigator.languages === '') {
-    confirmDetection('Chrome headless detected via navigator.languages');
-  }
+  await test('navigator.plugins empty', _ => {
+    return navigator.plugins.length === 0;
+  });
 
-  if (window.navigator.permissions.query.toString() !== 'function query() { [native code] }') {
-      confirmDetection('Chrome headless detected via permissions API overriden');
-  }
+  await test('navigator.languages blank', _ => {
+    return navigator.languages === '';
+  });
 
-  console.debug(isHeadless);
+  return results;
 };
