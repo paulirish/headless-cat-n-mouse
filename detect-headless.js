@@ -48,8 +48,10 @@ module.exports = async function() {
   });
 
   await test('iFrame for fresh window object', _ => {
+    // evaluateOnNewDocument scripts don't apply within [srcdoc] (or [sandbox]) iframes
+    // https://github.com/GoogleChrome/puppeteer/issues/1106#issuecomment-359313898
     const iframe = document.createElement('iframe');
-    iframe.srcdoc = 'about:blank';  
+    iframe.srcdoc = 'page intentionally left blank';  
     document.body.appendChild(iframe);
 
     // Here we would need to rerun all tests with `iframe.contentWindow` as `window`
