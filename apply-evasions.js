@@ -71,4 +71,13 @@ module.exports = async function(page) {
       get: () => ['en-US', 'en']
     });
   });
+
+  // Pass the iframe Test
+  await page.evaluateOnNewDocument(() => {
+      Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
+          get: function() {
+            return window;
+          }
+      });
+  });
 };
