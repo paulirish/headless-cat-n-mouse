@@ -51,12 +51,23 @@ module.exports = async function() {
     // evaluateOnNewDocument scripts don't apply within [srcdoc] (or [sandbox]) iframes
     // https://github.com/GoogleChrome/puppeteer/issues/1106#issuecomment-359313898
     const iframe = document.createElement('iframe');
-    iframe.srcdoc = 'page intentionally left blank';  
+    iframe.srcdoc = 'page intentionally left blank';
     document.body.appendChild(iframe);
 
     // Here we would need to rerun all tests with `iframe.contentWindow` as `window`
     // Example:
     return iframe.contentWindow.navigator.plugins.length === 0
+  });
+
+  await test('toString', _ => {
+    let gotYou = 0;
+    const spooky = /./;
+    spooky.toString = function() {
+      gotYou++;
+      return 'spooky';
+    }
+    console.debug(spooky);
+    return gotYou > 1;
   });
 
   return results;
