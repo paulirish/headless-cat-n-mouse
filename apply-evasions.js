@@ -74,10 +74,17 @@ module.exports = async function(page) {
 
   // Pass the iframe Test
   await page.evaluateOnNewDocument(() => {
-      Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
-          get: function() {
-            return window;
-          }
-      });
+    Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
+      get: function() {
+        return window;
+      }
+    });
+  });
+
+  // Pass toString test
+  await page.evaluateOnNewDocument(() => {
+    window.console.debug = () => {
+      return null;
+    };
   });
 };
