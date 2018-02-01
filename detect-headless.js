@@ -14,6 +14,8 @@ module.exports = async function() {
     return /HeadlessChrome/.test(window.navigator.userAgent);
   });
 
+  // Detects the --enable-automation || --headless flags
+  // Will return true in headful if --enable-automation is provided
   await test('navigator.webdriver present', _ => {
     return navigator.webdriver;
   });
@@ -59,6 +61,8 @@ module.exports = async function() {
     return iframe.contentWindow.navigator.plugins.length === 0
   });
 
+  // This detects that a devtools protocol agent is attached. 
+  // So it will also pass true in headful Chrome if the devtools window is attached
   await test('toString', _ => {
     let gotYou = 0;
     const spooky = /./;
