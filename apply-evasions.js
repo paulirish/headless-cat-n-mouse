@@ -81,7 +81,7 @@ module.exports = async function(page) {
     });
   });
 
-  // Pass toString test
+  // Pass toString test, though it breaks console.debug() from working
   await page.evaluateOnNewDocument(() => {
     window.console.debug = () => {
       return null;
