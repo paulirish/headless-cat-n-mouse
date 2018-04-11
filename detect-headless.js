@@ -17,7 +17,7 @@ module.exports = async function() {
   // Detects the --enable-automation || --headless flags
   // Will return true in headful if --enable-automation is provided
   await test('navigator.webdriver present', _ => {
-    return navigator.webdriver;
+    return 'webdriver' in navigator;
   });
 
   await test('window.chrome missing', _ => {
