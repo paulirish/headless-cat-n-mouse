@@ -10,11 +10,15 @@ module.exports = async function(page) {
   await page.setUserAgent(userAgent);
 
   // Pass the Webdriver Test.
-  await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false
+  await page.evaluateOnNewDocument(() => {    
+    const navigatorMock = {
+      permissions: this.navigator.permissions
+    }
+    Object.defineProperty(this, "navigator", {
+      get: () => navigatorMock
     });
   });
+
 
   // Pass the Chrome Test.
   await page.evaluateOnNewDocument(() => {
