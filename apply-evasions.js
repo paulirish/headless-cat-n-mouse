@@ -11,9 +11,9 @@ module.exports = async function(page) {
 
   // Pass the Webdriver Test.
   await page.evaluateOnNewDocument(() => {
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false
-    });
+    const newProto = navigator.__proto__;
+    delete newProto.webdriver;
+    navigator.__proto__ = newProto;
   });
 
   // Pass the Chrome Test.
