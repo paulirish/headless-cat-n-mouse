@@ -12,6 +12,12 @@ Headless detection *failed*.
 
 ---------------
 
+## See also
+
+* [`puppeteer-extra-plugin-stealth`](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth)
+
+--------------
+
 ### To run:
 ```sh
 npm install -g headless-cat-n-mouse
