@@ -32,10 +32,20 @@ module.exports = async function() {
   await test('permissions API overriden', _ => {
     const permissions = window.navigator.permissions;
 
-    console.log(window.navigator.permissions.__proto__.toString());
+    const toString = Object.prototype.toString;
+    console.log(toString.call(window.navigator.permissions.__proto__));
+    console.log(toString.call(window.navigator.permissions.__proto__.query));
+    console.log(window.navigator.permissions.__proto__.toString.call(window.navigator.permissions));
 
+
+    console.log(permissions.query.toString());
+
+
+    console.log(Date.now())
     if (permissions.query.toString() !== 'function query() { [native code] }') return true;
+    console.log('what')
     if (permissions.query.toString.toString() !== 'function toString() { [native code] }') return true;
+    console.log('what')
     if (
       permissions.query.toString.hasOwnProperty('[[Handler]]') &&
       permissions.query.toString.hasOwnProperty('[[Target]]') &&
@@ -67,14 +77,14 @@ module.exports = async function() {
 
   // This detects that a devtools protocol agent is attached.
   // So it will also pass true in headful Chrome if the devtools window is attached
-  await test('toString', _ => {
+  await test('console.log toString', _ => {
     let gotYou = 0;
     const spooky = /./;
     spooky.toString = function() {
       gotYou++;
       return 'spooky';
     };
-    console.debug(spooky);
+    console.log(spooky);
     return gotYou > 1;
   });
 
