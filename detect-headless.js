@@ -37,7 +37,8 @@ module.exports = async function() {
       permissions.query.toString.hasOwnProperty('[[Handler]]') &&
       permissions.query.toString.hasOwnProperty('[[Target]]') &&
       permissions.query.toString.hasOwnProperty('[[IsRevoked]]')
-    ) return true;
+    )
+      return true;
     if (permissions.hasOwnProperty('query')) return true;
   });
 
@@ -58,10 +59,10 @@ module.exports = async function() {
 
     // Here we would need to rerun all tests with `iframe.contentWindow` as `window`
     // Example:
-    return iframe.contentWindow.navigator.plugins.length === 0
+    return iframe.contentWindow.navigator.plugins.length === 0;
   });
 
-  // This detects that a devtools protocol agent is attached. 
+  // This detects that a devtools protocol agent is attached.
   // So it will also pass true in headful Chrome if the devtools window is attached
   await test('toString', _ => {
     let gotYou = 0;
@@ -69,7 +70,7 @@ module.exports = async function() {
     spooky.toString = function() {
       gotYou++;
       return 'spooky';
-    }
+    };
     console.debug(spooky);
     return gotYou > 1;
   });
