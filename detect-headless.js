@@ -57,6 +57,12 @@ module.exports = async function() {
     iframe.srcdoc = 'page intentionally left blank';
     document.body.appendChild(iframe);
 
+    // Verify iframe prototype isn't touched
+    const descriptors = Object.getOwnPropertyDescriptors(HTMLIFrameElement.prototype);
+    if (descriptors.contentWindow.get.toString() !== 'function query() { [native code] }') return true;
+    // Verify iframe isn't remapped to main window
+    if (iframe.contentWindow === window) return true;
+
     // Here we would need to rerun all tests with `iframe.contentWindow` as `window`
     // Example:
     return iframe.contentWindow.navigator.plugins.length === 0;
