@@ -15,6 +15,7 @@ Headless detection *succeeded*.
 ## See also
 
 * [`puppeteer-extra-plugin-stealth`](https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth)
+* [@antoinevastel's Are You Headless?](https://arh.antoinevastel.com/bots/areyouheadless)
 
 --------------
 
