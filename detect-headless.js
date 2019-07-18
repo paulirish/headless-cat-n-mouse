@@ -26,6 +26,7 @@ module.exports = async function() {
 
   await test('permissions API', async _ => {
     const permissionStatus = await navigator.permissions.query({name: 'notifications'});
+    console.log('permissionStatus', JSON.stringify(permissionStatus));
     return Notification.permission === 'denied' && permissionStatus.state === 'prompt';
   });
 

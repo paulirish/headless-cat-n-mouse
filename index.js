@@ -4,7 +4,7 @@ const applyEvasions = require('./apply-evasions');
 const detectHeadless = require('./detect-headless');
 
 async function run({includeEvasions = true, suppressLogs = false}) {
-  const browser = await puppeteer.launch({args: ['--no-sandbox']});
+  const browser = await puppeteer.launch({args: ['--no-sandbox --disable-notifications']});
   const page = await browser.newPage();
   page.on('console', msg => {
     if (!suppressLogs) console.log('Page console: ', msg.text());
