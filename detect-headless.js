@@ -59,7 +59,7 @@ module.exports = async function() {
 
     // Verify iframe prototype isn't touched
     const descriptors = Object.getOwnPropertyDescriptors(HTMLIFrameElement.prototype);
-    if (descriptors.contentWindow.get.toString() !== 'function query() { [native code] }') return true;
+    if (descriptors.contentWindow.get.toString() !== 'function get contentWindow() { [native code] }') return true;
     // Verify iframe isn't remapped to main window
     if (iframe.contentWindow === window) return true;
 
