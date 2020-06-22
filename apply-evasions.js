@@ -26,6 +26,12 @@ module.exports = async function(page) {
 
   // Pass the Permissions Test.
   await page.evaluateOnNewDocument(() => {
+    if (!window.Notification) {
+      window.Notification = {
+        permission: 'denied'
+      }
+    }
+    
     const originalQuery = window.navigator.permissions.query;
     window.navigator.permissions.__proto__.query = parameters =>
       parameters.name === 'notifications'
